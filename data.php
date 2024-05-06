@@ -1,25 +1,26 @@
 <?php
 // Koneksi ke database
-$conn = mysqli_connect("localhost", "root", "", "proyek2_sql");
+$koneksi = mysqli_connect("localhost", "root", " ", "proyek2_sql");
 
-// Periksa koneksi
-if (!$conn) {
-    die("Koneksi gagal: " . mysqli_connect_error());
+// Mengecek koneksi
+if (mysqli_connect_errno()) {
+    echo "Failed to connect to MySQL: " . mysqli_connect_error();
+    exit();
 }
 
-// Query untuk mengambil data transaksi
-$sql = "SELECT * FROM pendaftaran";
-$result = mysqli_query($conn, $sql);
+// Mengambil data dari tabel pendaftaran
+$query = "SELECT * FROM pendaftaran";
+$result = mysqli_query($koneksi, $query);
 
-// Mengubah hasil query menjadi array asosiatif
-$rows = array();
-while($row = mysqli_fetch_assoc($result)) {
-    $rows[] = $row;
+// Memasukkan hasil query ke dalam array
+$data = array();
+while ($row = mysqli_fetch_assoc($result)) {
+    $data[] = $row;
 }
 
-// Mengubah data menjadi format JSON
-echo json_encode($rows);
+// Mengubah array ke format JSON
+echo json_encode($data);
 
 // Menutup koneksi
-mysqli_close($conn);
+mysqli_close($koneksi);
 ?>
