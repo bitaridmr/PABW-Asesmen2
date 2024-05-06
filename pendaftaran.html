@@ -13,7 +13,7 @@
 $(document).ready(function() {
     // Memuat data dari server menggunakan AJAX saat halaman dimuat
     $.ajax({
-        url: "data.php", // Ganti dengan nama file PHP Anda
+        url: "data.php", 
         type: "GET",
         dataType: "json",
         success: function(data) {
@@ -40,7 +40,7 @@ $(document).ready(function() {
     // Fungsi untuk menghapus data dengan AJAX
     function hapusData(id) {
         $.ajax({
-            url: "hapus_data.php?id=" + id, // Ganti dengan nama file PHP yang digunakan untuk menghapus data
+            url: "hapus_data.php?id=" + id, 
             type: "GET",
             success: function(response) {
                 // Lakukan sesuatu setelah data dihapus
