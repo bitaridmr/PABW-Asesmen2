@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Pendaftaran</title>
+</head>
+<body>
+    <h1>Data Pendaftaran</h1>
+    <table id="data-table" border="1">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nama Pelanggan</th>
+                <th>Tanggal Daftar</th>
+                <th>Alamat</th>
+                <th>No. Telepon</th>
+                <th>Nomor Mobil</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+    <script>
+        // AJAX untuk memanggil data dari server
+        function getData() {
+            var xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    var data = JSON.parse(this.responseText);
+                    displayData(data);
+                }
+            };
+            xhr.open("GET", "get_data.php", true);
+            xhr.send();
+        }
+
+        // Menampilkan data ke dalam tabel
+        function displayData(data) {
+            var tableBody = document.querySelector("#data-table tbody");
+            tableBody.innerHTML = "";
+            data.forEach(function(row) {
+                var tr = document.createElement("tr");
+                tr.innerHTML = `
+                    <td>${row.id_daftar}</td>
+                    <td>${row.nama_pelanggan}</td>
+                    <td>${row.tanggal_daftar}</td>
+                    <td>${row.alamat}</td>
+                    <td>${row.no_tlp}</td>
+                    <td>${row.nomor_mobil}</td>
+                    <td><button onclick="deleteData(${row.id_daftar})">Delete</button></td>
+                `;
+                tableBody.appendChild(tr);
+            });
+        }
+
+        // AJAX untuk menghapus data
+        function deleteData(id) {
+            var xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    getData(); // Memuat ulang data setelah penghapusan
+                }
+            };
+            xhr.open("GET", "delete_data.php?id=" + id, true);
+            xhr.send();
+        }
+
+        // Memanggil data saat halaman dimuat
+        window.onload = function() {
+            getData();
+        };
+    </script>
+</body>
+</html>
