@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Menampilkan Data dengan AJAX</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body>
+
+<h2>Data Pendaftaran</h2>
+<div id="tabel-data"></div>
+
+<script>
+$(document).ready(function() {
+    // Memuat data dari server menggunakan AJAX saat halaman dimuat
+    $.ajax({
+        url: "data.php", // Ganti dengan nama file PHP Anda
+        type: "GET",
+        dataType: "json",
+        success: function(data) {
+            // Tampilkan data dalam bentuk tabel
+            var table = "<table><tr><th>ID</th><th>Nama Pelanggan</th><th>Tanggal Daftar</th><th>Alamat</th><th>No. Telp</th><th>Nomor Mobil</th></tr>";
+            for (var i = 0; i < data.length; i++) {
+                table += "<tr>";
+                table += "<td>" + data[i].id + "</td>";
+                table += "<td>" + data[i].nama_pelanggan + "</td>";
+                table += "<td>" + data[i].tanggal_daftar + "</td>";
+                table += "<td>" + data[i].alamat + "</td>";
+                table += "<td>" + data[i].no_tlp + "</td>";
+                table += "<td>" + data[i].nomor_mobil + "</td>";
+                table += "</tr>";
+            }
+            table += "</table>";
+            $("#tabel-data").html(table);
+        },
+        error: function(xhr, status, error) {
+            console.error(xhr.responseText);
+        }
+    });
+
+    // Fungsi untuk menghapus data dengan AJAX
+    function hapusData(id) {
+        $.ajax({
+            url: "hapus_data.php?id=" + id, // Ganti dengan nama file PHP yang digunakan untuk menghapus data
+            type: "GET",
+            success: function(response) {
+                // Lakukan sesuatu setelah data dihapus
+                console.log("Data berhasil dihapus");
+                // Optional: Refresh data setelah menghapus
+                location.reload();
+            },
+            error: function(xhr, status, error) {
+                console.error(xhr.responseText);
+            }
+        });
+    }
+});
+</script>
+
+</body>
+</html>
